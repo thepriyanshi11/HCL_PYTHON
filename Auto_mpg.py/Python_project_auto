@@ -1,0 +1,58 @@
+import pandas as pd
+df = pd.read_csv('/content/auto+mpg.csv')
+df
+#1. Find mean, median, min, max miles per gallon (MPG)
+
+mean_mpg = df['mpg'].mean()
+median_mpg = df['mpg'].median()
+min_mpg = df['mpg'].min()
+max_mpg = df['mpg'].max()
+
+print(f"Mean MPG: {mean_mpg:.2f}")
+print(f"Median MPG: {median_mpg:.2f}")
+print(f"Min MPG: {min_mpg:.2f}")
+print(f"Max MPG: {max_mpg:.2f}")
+#2. Compare Average MPG for cars with 4,6 and 8 cylinders.
+average_mpg = df[df['cylinders'].isin([4, 6, 8])].groupby('cylinders')['mpg'].mean()
+print(average_mpg)
+#3. Which model year has the highest average MPG.
+yearly_average_mpg = df.groupby('model_year')['mpg'].mean()
+highest_average_year = yearly_average_mpg.idxmax()
+highest_average_mpg = yearly_average_mpg.max()
+print(f"The model year with the highest average MPG is {highest_average_year} with an average MPG of {highest_average_mpg:.2f}.")
+# Q4: Top 10 Cars
+import pandas as pd
+
+top10 = df.sort_values(by="mpg", ascending=False).head(10)
+print(top10[["car_name", "mpg", "cylinders", "model_year", "origin"]])
+#5. Check Missing Values,especially horsepower.
+missing_values = df['horsepower'].isnull().sum()
+print(f"Number of missing values in 'horsepower' column: {missing_values}")
+#6. Q6. Compare Average MPG by Origin
+origin_mpg = df.groupby('origin')['mpg'].mean()
+print('Average MPG by Origin')
+print(origin_mpg)
+
+# Chart 1 Cylinder - Count bar chart
+import pandas as pd
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(7, 5))
+df["cylinders"].value_counts().sort_index().plot(kind="bar", color="skyblue", edgecolor="black")
+plt.title("Number of Cars by Cylinder Count")
+plt.xlabel("Cylinders")
+plt.ylabel("Number of Cars")
+plt.xticks(rotation=0)
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+plt.show()
+# Graph 2: MPG Histogram
+import pandas as pd
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(7, 5))
+plt.hist(df["mpg"], bins=15, color="teal", edgecolor="black")
+plt.title("Distribution of MPG")
+plt.xlabel("Miles Per Gallon (MPG)")
+plt.ylabel("Number of Cars")
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+plt.show()
